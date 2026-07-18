@@ -9,6 +9,8 @@ public class ErrorResponse {
 
     private int status;
 
+    private String error;
+
     private String message;
 
     private Map<String, String> errors;
@@ -18,14 +20,27 @@ public class ErrorResponse {
     }
 
 
-    public ErrorResponse(LocalDateTime timestamp, int status, String message) {
+    // Constructor for general errors
+    public ErrorResponse(
+            LocalDateTime timestamp,
+            int status,
+            String error,
+            String message
+    ) {
         this.timestamp = timestamp;
         this.status = status;
+        this.error = error;
         this.message = message;
     }
 
 
-    public ErrorResponse(LocalDateTime timestamp, int status, String message, Map<String, String> errors) {
+    // Constructor for validation errors
+    public ErrorResponse(
+            LocalDateTime timestamp,
+            int status,
+            String message,
+            Map<String, String> errors
+    ) {
         this.timestamp = timestamp;
         this.status = status;
         this.message = message;
@@ -50,6 +65,16 @@ public class ErrorResponse {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+
+    public String getError() {
+        return error;
+    }
+
+
+    public void setError(String error) {
+        this.error = error;
     }
 
 

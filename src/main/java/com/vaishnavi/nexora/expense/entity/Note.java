@@ -1,6 +1,5 @@
 package com.vaishnavi.nexora.expense.entity;
 
-
 import com.vaishnavi.nexora.category.entity.Category;
 import com.vaishnavi.nexora.entity.User;
 
@@ -9,9 +8,58 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 
-
 @Entity
-@Table(name = "notes")
+@Table(
+        name = "notes",
+
+        indexes = {
+
+                // Frequently used for user's notes
+                @Index(
+                        name = "idx_notes_user_id",
+                        columnList = "user_id"
+                ),
+
+                // Search and filter optimization
+                @Index(
+                        name = "idx_notes_title",
+                        columnList = "title"
+                ),
+
+                // Category filtering
+                @Index(
+                        name = "idx_notes_category_id",
+                        columnList = "category_id"
+                ),
+
+                // Frequently used status filters
+                @Index(
+                        name = "idx_notes_pinned",
+                        columnList = "pinned"
+                ),
+
+                @Index(
+                        name = "idx_notes_favorite",
+                        columnList = "favorite"
+                ),
+
+                @Index(
+                        name = "idx_notes_archived",
+                        columnList = "archived"
+                ),
+
+                @Index(
+                        name = "idx_notes_deleted",
+                        columnList = "deleted"
+                ),
+
+                // Sorting by creation date
+                @Index(
+                        name = "idx_notes_created_at",
+                        columnList = "created_at"
+                )
+        }
+)
 public class Note {
 
 
@@ -20,15 +68,12 @@ public class Note {
     private Long id;
 
 
-
     @Column(nullable = false)
     private String title;
 
 
-
     @Column(columnDefinition = "TEXT")
     private String content;
-
 
 
     // Note color
@@ -36,14 +81,11 @@ public class Note {
     private String color = "WHITE";
 
 
-
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
 
-
     private LocalDateTime updatedAt;
-
 
 
     // ================= STATUS =================
@@ -53,22 +95,16 @@ public class Note {
     private boolean pinned = false;
 
 
-
     @Column(nullable = false)
     private boolean archived = false;
-
 
 
     @Column(nullable = false)
     private boolean favorite = false;
 
 
-
     @Column(nullable = false)
     private boolean deleted = false;
-
-
-
 
 
     // ================= USER RELATION =================
@@ -82,18 +118,12 @@ public class Note {
     private User user;
 
 
-
-
-
     // ================= CATEGORY RELATION =================
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
-
-
-
 
 
     // ================= CONSTRUCTOR =================
@@ -104,32 +134,23 @@ public class Note {
     }
 
 
-
-
-
     // ================= TIMESTAMP =================
 
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
 
         createdAt = LocalDateTime.now();
 
         updatedAt = LocalDateTime.now();
-
     }
-
 
 
     @PreUpdate
-    public void preUpdate(){
+    public void preUpdate() {
 
         updatedAt = LocalDateTime.now();
-
     }
-
-
-
 
 
     // ================= GETTERS SETTERS =================
@@ -145,7 +166,6 @@ public class Note {
     }
 
 
-
     public String getTitle() {
         return title;
     }
@@ -154,7 +174,6 @@ public class Note {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
 
     public String getContent() {
@@ -167,7 +186,6 @@ public class Note {
     }
 
 
-
     public String getColor() {
         return color;
     }
@@ -176,7 +194,6 @@ public class Note {
     public void setColor(String color) {
         this.color = color;
     }
-
 
 
     public LocalDateTime getCreatedAt() {
@@ -189,7 +206,6 @@ public class Note {
     }
 
 
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -198,7 +214,6 @@ public class Note {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 
 
     public boolean isPinned() {
@@ -211,7 +226,6 @@ public class Note {
     }
 
 
-
     public boolean isArchived() {
         return archived;
     }
@@ -220,7 +234,6 @@ public class Note {
     public void setArchived(boolean archived) {
         this.archived = archived;
     }
-
 
 
     public boolean isFavorite() {
@@ -233,7 +246,6 @@ public class Note {
     }
 
 
-
     public boolean isDeleted() {
         return deleted;
     }
@@ -244,7 +256,6 @@ public class Note {
     }
 
 
-
     public User getUser() {
         return user;
     }
@@ -253,7 +264,6 @@ public class Note {
     public void setUser(User user) {
         this.user = user;
     }
-
 
 
     public Category getCategory() {

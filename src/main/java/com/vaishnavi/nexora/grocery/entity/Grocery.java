@@ -1,6 +1,5 @@
 package com.vaishnavi.nexora.grocery.entity;
 
-
 import com.vaishnavi.nexora.entity.User;
 
 import jakarta.persistence.*;
@@ -8,11 +7,50 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 
-
 @Entity
-@Table(name = "groceries")
-public class Grocery {
+@Table(
+        name = "groceries",
 
+        indexes = {
+
+                // Frequently used for user's groceries
+                @Index(
+                        name = "idx_groceries_user_id",
+                        columnList = "user_id"
+                ),
+
+                // Search optimization
+                @Index(
+                        name = "idx_groceries_item_name",
+                        columnList = "item_name"
+                ),
+
+                // Category filtering
+                @Index(
+                        name = "idx_groceries_category",
+                        columnList = "category"
+                ),
+
+                // Status filtering
+                @Index(
+                        name = "idx_groceries_status",
+                        columnList = "status"
+                ),
+
+                // Priority filtering
+                @Index(
+                        name = "idx_groceries_priority",
+                        columnList = "priority"
+                ),
+
+                // Sorting by creation date
+                @Index(
+                        name = "idx_groceries_created_at",
+                        columnList = "created_at"
+                )
+        }
+)
+public class Grocery {
 
 
     @Id
@@ -20,23 +58,18 @@ public class Grocery {
     private Long id;
 
 
-
     @Column(nullable = false)
     private String itemName;
 
 
-
     private Integer quantity;
-
 
 
     @Enumerated(EnumType.STRING)
     private GroceryUnit unit;
 
 
-
     private String category;
-
 
 
     @Enumerated(EnumType.STRING)
@@ -44,29 +77,21 @@ public class Grocery {
     private GroceryStatus status = GroceryStatus.PENDING;
 
 
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Priority priority = Priority.MEDIUM;
 
 
-
     private Double estimatedPrice;
-
 
 
     private Double actualPrice;
 
 
-
     private LocalDateTime createdAt;
 
 
-
     private LocalDateTime updatedAt;
-
-
-
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -77,19 +102,9 @@ public class Grocery {
     private User user;
 
 
-
-
-
-
-
-    public Grocery(){
+    public Grocery() {
 
     }
-
-
-
-
-
 
 
     public Grocery(
@@ -100,7 +115,7 @@ public class Grocery {
             Priority priority,
             Double estimatedPrice,
             User user
-    ){
+    ) {
 
         this.itemName = itemName;
         this.quantity = quantity;
@@ -109,214 +124,141 @@ public class Grocery {
         this.priority = priority;
         this.estimatedPrice = estimatedPrice;
         this.user = user;
-
     }
-
-
-
-
-
 
 
     @PrePersist
-    public void onCreate(){
+    public void onCreate() {
 
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-
     }
-
-
-
-
-
 
 
     @PreUpdate
-    public void onUpdate(){
+    public void onUpdate() {
 
         updatedAt = LocalDateTime.now();
-
     }
 
 
-
-
-
-
-
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
 
-    public void setId(Long id){
-        this.id=id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
 
-
-
-
-
-
-    public String getItemName(){
+    public String getItemName() {
         return itemName;
     }
 
 
-    public void setItemName(String itemName){
-        this.itemName=itemName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
 
-
-
-
-
-
-    public Integer getQuantity(){
+    public Integer getQuantity() {
         return quantity;
     }
 
 
-    public void setQuantity(Integer quantity){
-        this.quantity=quantity;
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
 
-
-
-
-
-
-    public GroceryUnit getUnit(){
+    public GroceryUnit getUnit() {
         return unit;
     }
 
 
-    public void setUnit(GroceryUnit unit){
-        this.unit=unit;
+    public void setUnit(GroceryUnit unit) {
+        this.unit = unit;
     }
 
 
-
-
-
-
-
-    public String getCategory(){
+    public String getCategory() {
         return category;
     }
 
 
-    public void setCategory(String category){
-        this.category=category;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
 
-
-
-
-
-
-    public GroceryStatus getStatus(){
+    public GroceryStatus getStatus() {
         return status;
     }
 
 
-    public void setStatus(GroceryStatus status){
-        this.status=status;
+    public void setStatus(GroceryStatus status) {
+        this.status = status;
     }
 
 
-
-
-
-
-
-    public Priority getPriority(){
+    public Priority getPriority() {
         return priority;
     }
 
 
-    public void setPriority(Priority priority){
-        this.priority=priority;
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
 
-
-
-
-
-
-    public Double getEstimatedPrice(){
+    public Double getEstimatedPrice() {
         return estimatedPrice;
     }
 
 
-    public void setEstimatedPrice(Double estimatedPrice){
-        this.estimatedPrice=estimatedPrice;
+    public void setEstimatedPrice(Double estimatedPrice) {
+        this.estimatedPrice = estimatedPrice;
     }
 
 
-
-
-
-
-
-    public Double getActualPrice(){
+    public Double getActualPrice() {
         return actualPrice;
     }
 
 
-    public void setActualPrice(Double actualPrice){
-        this.actualPrice=actualPrice;
+    public void setActualPrice(Double actualPrice) {
+        this.actualPrice = actualPrice;
     }
 
 
-
-
-
-
-
-    public LocalDateTime getCreatedAt(){
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
 
-    public void setCreatedAt(LocalDateTime createdAt){
-        this.createdAt=createdAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 
-
-
-
-
-
-    public LocalDateTime getUpdatedAt(){
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
 
-    public void setUpdatedAt(LocalDateTime updatedAt){
-        this.updatedAt=updatedAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 
-
-
-
-
-
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 
 
-    public void setUser(User user){
-        this.user=user;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

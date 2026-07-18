@@ -1,6 +1,5 @@
 package com.vaishnavi.nexora.reminder.entity;
 
-
 import com.vaishnavi.nexora.entity.User;
 import jakarta.persistence.*;
 
@@ -8,7 +7,42 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "reminders")
+@Table(
+        name = "reminders",
+
+        indexes = {
+
+                // Frequently used for user's reminders
+                @Index(
+                        name = "idx_reminders_user_id",
+                        columnList = "user_id"
+                ),
+
+                // Search optimization
+                @Index(
+                        name = "idx_reminders_title",
+                        columnList = "title"
+                ),
+
+                // Reminder date filtering and sorting
+                @Index(
+                        name = "idx_reminders_reminder_date",
+                        columnList = "reminder_date"
+                ),
+
+                // Completed status filtering
+                @Index(
+                        name = "idx_reminders_completed",
+                        columnList = "completed"
+                ),
+
+                // Sorting by creation date
+                @Index(
+                        name = "idx_reminders_created_at",
+                        columnList = "created_at"
+                )
+        }
+)
 public class Reminder {
 
 
@@ -33,16 +67,17 @@ public class Reminder {
     private LocalDateTime createdAt;
 
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false
+    )
     private User user;
-
 
 
     public Reminder() {
 
     }
-
 
 
     public Reminder(
@@ -51,6 +86,7 @@ public class Reminder {
             LocalDateTime reminderDate,
             User user
     ) {
+
         this.title = title;
         this.description = description;
         this.reminderDate = reminderDate;
@@ -58,6 +94,14 @@ public class Reminder {
         this.createdAt = LocalDateTime.now();
     }
 
+
+    @PrePersist
+    public void onCreate() {
+
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
 
 
     public Long getId() {
@@ -128,4 +172,5 @@ public class Reminder {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

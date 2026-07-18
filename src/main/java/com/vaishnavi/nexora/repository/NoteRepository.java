@@ -10,15 +10,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Long> {
 
 
+    // ================= FIND NOTE BY ID AND USER =================
+
+    Optional<Note> findByIdAndUser(
+            Long id,
+            User user
+    );
+
 
     // ================= PAGINATION =================
-
 
     Page<Note> findByUser(
             User user,
@@ -26,10 +33,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
     // ================= SEARCH WITH PAGINATION =================
-
 
     Page<Note> findByUserAndTitleContainingIgnoreCase(
             User user,
@@ -38,10 +42,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
     // ================= SEARCH WITHOUT PAGINATION =================
-
 
     List<Note> findByUserAndTitleContainingIgnoreCase(
             User user,
@@ -49,12 +50,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
-
-
     // ================= CATEGORY FILTER =================
-
 
     Page<Note> findByUserAndCategoryId(
             User user,
@@ -69,12 +65,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
-
-
     // ================= PINNED NOTES =================
-
 
     Page<Note> findByUserAndPinnedTrue(
             User user,
@@ -87,13 +78,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
-
-
-
     // ================= ARCHIVED NOTES =================
-
 
     Page<Note> findByUserAndArchivedTrue(
             User user,
@@ -106,13 +91,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
-
-
-
     // ================= FAVORITE NOTES =================
-
 
     Page<Note> findByUserAndFavoriteTrue(
             User user,
@@ -125,13 +104,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
-
-
-
     // ================= DELETED NOTES =================
-
 
     Page<Note> findByUserAndDeletedTrue(
             User user,
@@ -144,19 +117,13 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     );
 
 
-
-
-
-
-
     // ================= DASHBOARD =================
-
 
     long countByUser(User user);
 
 
-
-    long countByUserAndFavoriteTrue(User user);
-
+    long countByUserAndFavoriteTrue(
+            User user
+    );
 
 }

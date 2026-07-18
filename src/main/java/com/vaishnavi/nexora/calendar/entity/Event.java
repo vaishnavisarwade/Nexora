@@ -1,6 +1,5 @@
 package com.vaishnavi.nexora.calendar.entity;
 
-
 import com.vaishnavi.nexora.entity.User;
 
 import jakarta.persistence.*;
@@ -8,11 +7,44 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 
-
 @Entity
-@Table(name = "events")
-public class Event {
+@Table(
+        name = "events",
 
+        indexes = {
+
+                // Frequently used for user's events
+                @Index(
+                        name = "idx_events_user_id",
+                        columnList = "user_id"
+                ),
+
+                // Search optimization
+                @Index(
+                        name = "idx_events_title",
+                        columnList = "title"
+                ),
+
+                // Upcoming events and date sorting
+                @Index(
+                        name = "idx_events_event_date",
+                        columnList = "event_date"
+                ),
+
+                // Completed event filtering
+                @Index(
+                        name = "idx_events_completed",
+                        columnList = "completed"
+                ),
+
+                // Sorting by creation date
+                @Index(
+                        name = "idx_events_created_at",
+                        columnList = "created_at"
+                )
+        }
+)
+public class Event {
 
 
     @Id
@@ -20,39 +52,27 @@ public class Event {
     private Long id;
 
 
-
     @Column(nullable = false)
     private String title;
-
 
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
 
-
     private LocalDateTime eventDate;
-
 
 
     private String location;
 
 
-
     private boolean completed = false;
-
 
 
     private LocalDateTime createdAt;
 
 
-
     private LocalDateTime updatedAt;
-
-
-
-
-
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -63,19 +83,9 @@ public class Event {
     private User user;
 
 
-
-
-
-
-
-    public Event(){
+    public Event() {
 
     }
-
-
-
-
-
 
 
     public Event(
@@ -84,178 +94,118 @@ public class Event {
             LocalDateTime eventDate,
             String location,
             User user
-    ){
+    ) {
 
         this.title = title;
         this.description = description;
         this.eventDate = eventDate;
         this.location = location;
         this.user = user;
-
     }
-
-
-
-
-
 
 
     @PrePersist
-    public void onCreate(){
+    public void onCreate() {
 
         createdAt = LocalDateTime.now();
-
         updatedAt = LocalDateTime.now();
-
     }
-
-
-
-
-
 
 
     @PreUpdate
-    public void onUpdate(){
+    public void onUpdate() {
 
         updatedAt = LocalDateTime.now();
-
     }
 
 
-
-
-
-
-
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
 
-    public void setId(Long id){
-        this.id=id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
 
-
-
-
-
-
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 
 
-    public void setTitle(String title){
-        this.title=title;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
-
-
-
-
-
-    public String getDescription(){
+    public String getDescription() {
         return description;
     }
 
 
-    public void setDescription(String description){
-        this.description=description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 
-
-
-
-
-
-    public LocalDateTime getEventDate(){
+    public LocalDateTime getEventDate() {
         return eventDate;
     }
 
 
-    public void setEventDate(LocalDateTime eventDate){
-        this.eventDate=eventDate;
+    public void setEventDate(LocalDateTime eventDate) {
+        this.eventDate = eventDate;
     }
 
 
-
-
-
-
-
-    public String getLocation(){
+    public String getLocation() {
         return location;
     }
 
 
-    public void setLocation(String location){
-        this.location=location;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
 
-
-
-
-
-
-    public boolean isCompleted(){
+    public boolean isCompleted() {
         return completed;
     }
 
 
-    public void setCompleted(boolean completed){
-        this.completed=completed;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
 
-
-
-
-
-
-    public LocalDateTime getCreatedAt(){
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
 
-    public void setCreatedAt(LocalDateTime createdAt){
-        this.createdAt=createdAt;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 
-
-
-
-
-
-    public LocalDateTime getUpdatedAt(){
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
 
-    public void setUpdatedAt(LocalDateTime updatedAt){
-        this.updatedAt=updatedAt;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
 
-
-
-
-
-
-    public User getUser(){
+    public User getUser() {
         return user;
     }
 
 
-    public void setUser(User user){
-        this.user=user;
+    public void setUser(User user) {
+        this.user = user;
     }
-
 
 }
